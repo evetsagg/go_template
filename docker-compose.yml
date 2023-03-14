@@ -1,0 +1,15 @@
+version: "3.6"
+services:
+  #frontend:
+  #  build: frontend
+  #  ports:
+  #  - 8080:80
+  #  depends_on:
+  #  - backend
+  goservice: #container name testgo-goservice
+    build: ./
+    image: go_rest_template_v2
+    ports:
+      - 8082:8080
+    volumes:
+      - /opt/app/logs:/app/logs
