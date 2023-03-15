@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 	"github.com/magiconair/properties"
@@ -22,6 +23,7 @@ func NewServer(logger LoggingI, prop *properties.Properties, proc *Processor) *S
 }
 
 func (s *Server) handleRequests() {
+
 	myRouter := mux.NewRouter().StrictSlash(true)
 	myRouter.HandleFunc("/", homePage)
 	myRouter.HandleFunc("/products", s.processor.returnAllProducts)
@@ -32,8 +34,15 @@ func (s *Server) handleRequests() {
 	myRouter.HandleFunc("/article/{id}", s.processor.deleteArticle).Methods("DELETE")
 	myRouter.HandleFunc("/article/{id}", s.processor.returnSingleArticle)
 	myRouter.Path("/metrics").Handler(promhttp.Handler())
-
-	s.logger.Fatal(http.ListenAndServe(":8080", myRouter))
+	//Http time out config,
+	srv := &http.Server{
+		Handler: myRouter,
+		Addr:    "localhost:8080",
+		// Good practice: enforce timeouts for servers you create!
+		WriteTimeout: 15 * time.Second,
+		ReadTimeout:  15 * time.Second,
+	}
+	s.logger.Fatal(srv.ListenAndServe())
 }
 
 func homePage(w http.ResponseWriter, r *http.Request) {
