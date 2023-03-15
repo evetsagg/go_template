@@ -25,6 +25,8 @@ func NewServer(logger LoggingI, prop *properties.Properties, proc *Processor) *S
 func (s *Server) handleRequests() {
 
 	myRouter := mux.NewRouter().StrictSlash(true)
+	myRouter.Use(prometheusMiddleware)
+	myRouter.Path("/metrics").Handler(promhttp.Handler())
 	myRouter.HandleFunc("/", homePage)
 	myRouter.HandleFunc("/products", s.processor.returnAllProducts)
 	myRouter.HandleFunc("/product/{id}", s.processor.returnSingleProduct)
@@ -33,7 +35,6 @@ func (s *Server) handleRequests() {
 	myRouter.HandleFunc("/article", s.processor.createNewArticle).Methods("POST")
 	myRouter.HandleFunc("/article/{id}", s.processor.deleteArticle).Methods("DELETE")
 	myRouter.HandleFunc("/article/{id}", s.processor.returnSingleArticle)
-	myRouter.Path("/metrics").Handler(promhttp.Handler())
 	//Http time out config,
 	srv := &http.Server{
 		Handler: myRouter,
