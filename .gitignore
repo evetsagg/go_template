@@ -2,3 +2,4 @@
 .history/
 logs/
 bin/
+*.db

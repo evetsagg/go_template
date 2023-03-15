@@ -8,6 +8,7 @@ require (
 	github.com/magiconair/properties v1.8.7
 	github.com/prometheus/client_golang v1.14.0
 	go.uber.org/zap v1.24.0
+	gorm.io/driver/mysql v1.4.7
 	gorm.io/driver/sqlite v1.4.4
 	gorm.io/gorm v1.24.6
 
@@ -16,6 +17,7 @@ require (
 require (
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
+	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
