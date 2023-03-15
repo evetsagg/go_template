@@ -1,7 +1,9 @@
 # Go Microservice Template (WIP)
+
 A Go Microservice template with sample logging (using zap), daos, docker files, etc.
 
 ## General build and run instructions
+
 To build
 
 <code>go build -o bin ./...</code>
@@ -24,4 +26,7 @@ To use Docker-compose
 
 <code>docker-compose up -d</code>
 
+## TODO
 
+- Prometheus integration
+- Grafana integration
