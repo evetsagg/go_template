@@ -15,11 +15,13 @@ func NewLogger() *Logger {
 	cfg.OutputPaths = []string{
 		"logs/system.log",
 	}
-	logger, err := cfg.Build()
-	defer logger.Sync()
+	logger, err := cfg.Build((zap.AddCallerSkip(1)))
+
 	if err != nil {
 		log.Fatal(err)
 	}
+	defer logger.Sync()
+
 	return &Logger{log: logger}
 }
 
