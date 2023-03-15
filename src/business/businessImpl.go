@@ -1,12 +1,15 @@
 package business
 
-import (
-	"go_template/src/logger"
-)
-
-type(
+type LoggingI interface {
+	//todo add more functionality
+	Info(string)
+	Error(error)
+	Debug(string)
+	Fatal(error)
+}
+type (
 	BusinessFacade struct {
-		logger logger.LoggingI
+		logger LoggingI
 	}
 )
 
@@ -14,7 +17,7 @@ func (b *BusinessFacade) ProcessSomething() {
 	b.logger.Info("In BusinessFacade.ProcessSomething()")
 }
 
-func New(logger logger.LoggingI) *BusinessFacade{
+func New(logger LoggingI) *BusinessFacade {
 	return &BusinessFacade{logger: logger}
 
 }

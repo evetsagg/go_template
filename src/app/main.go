@@ -7,6 +7,14 @@ import (
 	"github.com/magiconair/properties"
 )
 
+type LoggingI interface {
+	//todo add more functionality
+	Info(string)
+	Error(error)
+	Debug(string)
+	Fatal(error)
+}
+
 func main() {
 
 	loggingService := logger.NewLogger()
@@ -22,6 +30,6 @@ func main() {
 	//Starting the Server to listen to request
 	server := NewServer(loggingService, prop, processor)
 	server.handleRequests()
-	//todo set configuration for api clients if applicable, set db info
+	//todo set configuration for api clients if applicable
 
 }

@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"go_template/src/logger"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -12,13 +11,13 @@ import (
 
 type (
 	Server struct {
-		logger    logger.LoggingI
+		logger    LoggingI
 		prop      *properties.Properties
 		processor *Processor
 	}
 )
 
-func NewServer(logger logger.LoggingI, prop *properties.Properties, proc *Processor) *Server {
+func NewServer(logger LoggingI, prop *properties.Properties, proc *Processor) *Server {
 	return &Server{logger: logger, prop: prop, processor: proc}
 }
 
