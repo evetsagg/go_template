@@ -19,8 +19,8 @@ func main() {
 
 	loggingService := logger.NewLogger()
 	loggingService.Info("Initialized Logger")
-	//db := database.GetDatabase(loggingService)
-	db := database.GetMysqlDatabase(loggingService)
+	db := database.GetDatabase(loggingService)
+	//db := database.GetMysqlDatabase(loggingService)
 	loggingService.Info("Initialized Database")
 
 	//Setup Dependency Injections and getting app properties
