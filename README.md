@@ -29,6 +29,7 @@ To use Docker-compose
 ## TODO
 
 - Sample Rest API client
+- Add validation framework to requests
 - Prometheus integration
 - Grafana integration
 - Use Gin framework
