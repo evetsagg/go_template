@@ -11,7 +11,7 @@ type Logger struct {
 }
 
 func NewLogger() *Logger {
-	cfg := zap.NewProductionConfig()
+	cfg := zap.NewDevelopmentConfig()
 	cfg.OutputPaths = []string{
 		"logs/system.log",
 	}

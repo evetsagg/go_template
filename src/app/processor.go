@@ -19,8 +19,12 @@ type Processor struct {
 	productDao *database.ProductDao
 }
 
-func NewProcessor(logger LoggingI, prop *properties.Properties, productDao *database.ProductDao) *Processor {
-	return &Processor{logger: logger, prop: prop, productDao: productDao}
+// func NewProcessor(logger LoggingI, prop *properties.Properties, productDao *database.ProductDao) *Processor {
+// 	return &Processor{logger: logger, prop: prop, productDao: productDao}
+// }
+
+func NewProcessor(logger LoggingI, prop *properties.Properties) *Processor {
+	return &Processor{logger: logger, prop: prop}
 }
 
 func (p *Processor) returnAllArticles(w http.ResponseWriter, r *http.Request) {
