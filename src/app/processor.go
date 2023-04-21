@@ -9,8 +9,11 @@ import (
 
 	business "go_template/src/business"
 
+	"errors"
+
 	"github.com/gorilla/mux"
 	"github.com/magiconair/properties"
+	"gorm.io/gorm"
 )
 
 type Processor struct {
@@ -102,19 +105,33 @@ func (p *Processor) returnSingleProduct(w http.ResponseWriter, r *http.Request) 
 	//     w.Write(jsonResp)
 	// } else {
 	//var product model.Product
-	result := p.productDao.FindById(key)
+	result, err := p.productDao.FindById(key)
 	if result != nil {
 		json.NewEncoder(w).Encode(result)
-	} else {
-		w.WriteHeader(http.StatusNotFound)
-		w.Header().Set("Content-Type", "application/json")
-		resp := make(map[string]string)
-		resp["message"] = "Not Found"
-		jsonResp, err := json.Marshal(resp)
-		if err != nil {
-			p.logger.Fatal(err)
+	}
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			w.WriteHeader(http.StatusNotFound)
+			w.Header().Set("Content-Type", "application/json")
+			resp := make(map[string]string)
+			resp["message"] = "Not Found"
+			jsonResp, err := json.Marshal(resp)
+			if err != nil {
+				p.logger.Fatal(err)
+			}
+			w.Write(jsonResp)
+		} else {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Header().Set("Content-Type", "application/json")
+			resp := make(map[string]string)
+			resp["message"] = "System Error"
+			jsonResp, err := json.Marshal(resp)
+			if err != nil {
+				p.logger.Fatal(err)
+			}
+			w.Write(jsonResp)
+
 		}
-		w.Write(jsonResp)
 	}
 
 }

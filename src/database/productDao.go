@@ -47,14 +47,14 @@ func (p *ProductDao) FindAll() *[]model.Product {
 	}
 	return &products
 }
-func (p *ProductDao) FindById(key string) *model.Product {
+func (p *ProductDao) FindById(key string) (*model.Product, error) {
 	var product model.Product
 	result := p.DB.First(&product, "Id = ?", key)
 	if result.Error != nil {
 		p.logger.Error(result.Error)
 
-		return nil
+		return nil, result.Error
 	} else {
-		return &product
+		return &product, nil
 	}
 }
