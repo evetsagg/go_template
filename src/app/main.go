@@ -26,7 +26,6 @@ func main() {
 	//Setup Dependency Injections and getting app properties
 	productDao := database.NewProductDao(loggingService, db)
 	prop := properties.MustLoadFile("config/app.properties", properties.UTF8)
-	//processor := NewProcessor(loggingService, prop)
 	processor := NewProcessor(loggingService, prop, productDao)
 
 	//Starting the Server to listen to request

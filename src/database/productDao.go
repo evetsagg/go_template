@@ -30,10 +30,13 @@ func (p *ProductDao) Update(product *model.Product) *model.Product {
 	}
 	return product
 }
-func (p *ProductDao) Delete(product *model.Product) {
+func (p *ProductDao) Delete(product *model.Product) error {
 	result := p.DB.Delete(&product)
 	if result.Error != nil {
 		p.logger.Error(result.Error)
+		return result.Error
+	} else {
+		return nil
 	}
 }
 func (p *ProductDao) FindAll() *[]model.Product {
@@ -44,10 +47,14 @@ func (p *ProductDao) FindAll() *[]model.Product {
 	}
 	return &products
 }
-func (p *ProductDao) FindById(product *model.Product) *model.Product {
-	result := p.DB.First(&product)
+func (p *ProductDao) FindById(key string) *model.Product {
+	var product model.Product
+	result := p.DB.First(&product, "Id = ?", key)
 	if result.Error != nil {
 		p.logger.Error(result.Error)
+
+		return nil
+	} else {
+		return &product
 	}
-	return product
 }

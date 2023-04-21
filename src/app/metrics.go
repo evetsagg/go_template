@@ -28,5 +28,4 @@ func prometheusMiddleware(next http.Handler) http.Handler {
 
 func init() {
 	prometheus.Register(httpDuration)
-
 }

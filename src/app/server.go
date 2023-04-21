@@ -28,8 +28,10 @@ func (s *Server) handleRequests() {
 	myRouter.Use(prometheusMiddleware)
 	myRouter.Path("/metrics").Handler(promhttp.Handler())
 	myRouter.HandleFunc("/", homePage)
-	myRouter.HandleFunc("/products", s.processor.returnAllProducts)
-	myRouter.HandleFunc("/product/{id}", s.processor.returnSingleProduct)
+	myRouter.HandleFunc("/products", s.processor.returnAllProducts).Methods("GET")
+	myRouter.HandleFunc("/product/{id}", s.processor.returnSingleProduct).Methods("GET")
+	myRouter.HandleFunc("/product/{id}", s.processor.deleteProduct).Methods("DELETE")
+
 	myRouter.HandleFunc("/product", s.processor.createProduct).Methods("POST")
 	myRouter.HandleFunc("/articles", s.processor.returnAllArticles)
 	myRouter.HandleFunc("/article", s.processor.createNewArticle).Methods("POST")
@@ -43,6 +45,7 @@ func (s *Server) handleRequests() {
 		WriteTimeout: 15 * time.Second,
 		ReadTimeout:  15 * time.Second,
 	}
+
 	s.logger.Fatal(srv.ListenAndServe())
 }
 

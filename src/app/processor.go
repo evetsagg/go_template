@@ -101,11 +101,64 @@ func (p *Processor) returnSingleProduct(w http.ResponseWriter, r *http.Request) 
 	//     }
 	//     w.Write(jsonResp)
 	// } else {
-	product := &model.Product{Id: key}
-	result := p.productDao.FindById(product)
-	json.NewEncoder(w).Encode(result)
+	//var product model.Product
+	result := p.productDao.FindById(key)
+	if result != nil {
+		json.NewEncoder(w).Encode(result)
+	} else {
+		w.WriteHeader(http.StatusNotFound)
+		w.Header().Set("Content-Type", "application/json")
+		resp := make(map[string]string)
+		resp["message"] = "Not Found"
+		jsonResp, err := json.Marshal(resp)
+		if err != nil {
+			p.logger.Fatal(err)
+		}
+		w.Write(jsonResp)
+	}
 
-	//}
+}
+
+func (p *Processor) deleteProduct(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	key := vars["id"]
+	//intVar, err := strconv.Atoi(key)
+	// if err != nil{
+	//     p.logger.Error(err)
+	//     w.WriteHeader(http.StatusBadRequest)
+	//     w.Header().Set("Content-Type", "application/json")
+	//     resp := make(map[string]string)
+	//     resp["message"] = "id must be integer value"
+	//     jsonResp, err := json.Marshal(resp)
+	//     if err != nil {
+	//         p.logger.Fatal(err)
+	//     }
+	//     w.Write(jsonResp)
+	// } else {
+	product := model.Product{Id: key}
+
+	err := p.productDao.Delete(&product)
+	if err != nil {
+		w.WriteHeader(http.StatusNotFound)
+		w.Header().Set("Content-Type", "application/json")
+		resp := make(map[string]string)
+		resp["message"] = "System Error"
+		jsonResp, err := json.Marshal(resp)
+		if err != nil {
+			p.logger.Fatal(err)
+		}
+		w.Write(jsonResp)
+	} else {
+		w.WriteHeader(http.StatusOK)
+		w.Header().Set("Content-Type", "application/json")
+		resp := make(map[string]string)
+		resp["message"] = "Deleted"
+		jsonResp, err := json.Marshal(resp)
+		if err != nil {
+			p.logger.Fatal(err)
+		}
+		w.Write(jsonResp)
+	}
 
 }
 func (p *Processor) returnAllProducts(w http.ResponseWriter, r *http.Request) {
